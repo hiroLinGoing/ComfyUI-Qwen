@@ -48,7 +48,7 @@ class Qwen2_Zho:
                 "model": ("QWEN2",),
                 "tokenizer": ("TK",),
                 "prompt": ("STRING", {"default": "What is the meaning of life?", "multiline": True}),
-                "system_instruction": ("STRING", {"default": "You are creating a prompt for Stable Diffusion to generate an image. First step: understand the input and generate a text prompt for the input. Second step: only respond in English with the prompt itself in phrase, but embellish it as needed but keep it under 200 tokens.", "multiline": True}),
+                "system_instruction": ("STRING", {"default": "你正在为Stable Diffusion创建一个生成图像的提示。第一步：理解输入内容并根据输入生成文本提示。第二步：仅用英文回答，给出优化后的提示词，限制在200个词以内，可以适当修饰。", "multiline": True}),
             }
         }
 
