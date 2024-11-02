@@ -14,7 +14,7 @@ class Qwen2_ModelLoader_Zho:
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "model_name": (["Qwen/Qwen2-7B-Instruct", "Qwen/Qwen2-72B-Instruct", "Qwen/Qwen2.5-0.5B-Instruct", "Qwen/Qwen2.5-1.5B-Instruct", "Qwen/Qwen2.5-3B-Instruct", "Qwen/Qwen2.5-7B-Instruct", "Qwen/Qwen2.5-14B-Instruct", "Qwen/Qwen2.5-32B-Instruct", "Qwen/Qwen2.5-72B-Instruct"],),
+                "model_name": (["Qwen/Qwen2.5-1.5B-Instruct", "Qwen/Qwen2-7B-Instruct", "Qwen/Qwen2-72B-Instruct", "Qwen/Qwen2.5-0.5B-Instruct", "Qwen/Qwen2.5-3B-Instruct", "Qwen/Qwen2.5-7B-Instruct", "Qwen/Qwen2.5-14B-Instruct", "Qwen/Qwen2.5-32B-Instruct", "Qwen/Qwen2.5-72B-Instruct"],),
             }
         }
 
@@ -24,12 +24,16 @@ class Qwen2_ModelLoader_Zho:
     CATEGORY = "⛱️Qwen2"
   
     def load_model(self, model_name):
+        current_directory = os.getcwd()
+        #同级目录获取 可以使用snapshot_download('Qwen/Qwen2.5-1.5B-Instruct', local_dir='ComfyUI/custom_nodes/ComfyUI-Qwen/Qwen/Qwen2.5-1.5B-Instruct')
+        model_path = os.path.join(current_directory, "custom_nodes", "ComfyUI-Qwen", model_name)
         model = AutoModelForCausalLM.from_pretrained(
-            model_name, 
+            model_path, 
             device_map="cuda", 
-            torch_dtype="auto", 
+            torch_dtype="auto",
+            local_files_only=True
         )
-        tokenizer = AutoTokenizer.from_pretrained(model_name)
+        tokenizer = AutoTokenizer.from_pretrained(model_path,local_files_only=True)
         return model, tokenizer
 
 
@@ -92,7 +96,7 @@ class Qwen2_Chat_Zho:
             "required": {
                 "model": ("QWEN2",),
                 "tokenizer": ("TK",),
-                "prompt": ("STRING", {"default": "What is the meaning of life?", "multiline": True}),
+                "prompt": ("STRING", {"default": "一艘船", "multiline": True}),
                 "system_instruction": ("STRING", {"default": "You are creating a prompt for Stable Diffusion to generate an image. First step: understand the input and generate a text prompt for the input. Second step: only respond in English with the prompt itself in phrase, but embellish it as needed but keep it under 200 tokens.", "multiline": True}),
             }
         }
